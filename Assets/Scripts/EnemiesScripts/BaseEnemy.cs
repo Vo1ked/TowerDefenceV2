@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -10,6 +9,7 @@ public class BaseEnemy : MonoBehaviour
 
     [Inject] SignalBus _signalBus;
     [SerializeField] EnemyStats stats;
+    public float Heals { get; private set; }
     int _id;
     public int id
     {
@@ -22,6 +22,8 @@ public class BaseEnemy : MonoBehaviour
             _id = value;
         }
     }
+    Coroutine _moveCorutine;
+
 
     protected NavMeshAgent meshAgent;
     protected int _waypointCounter;
@@ -33,10 +35,11 @@ public class BaseEnemy : MonoBehaviour
 
     public virtual void Init()
     {
+        Heals = stats.heals;
         meshAgent.speed = stats.speed;
         meshAgent.enabled = true;
         meshAgent.Warp(EnemyPath.Waypoints[_waypointCounter].position);
-        StartCoroutine(SetWaypoint());
+        _moveCorutine = StartCoroutine(SetWaypoint());
     }
 
     public virtual void Move()
@@ -49,13 +52,13 @@ public class BaseEnemy : MonoBehaviour
         _waypointCounter++;
         if (_waypointCounter >= EnemyPath.Waypoints.Count)
         {
-            Destroy(gameObject);
-            _signalBus.Fire(new EnemyDieSignal(this));
+            UnitDie();
             yield break;
         }
         Move();
         yield return new WaitUntil(DistanceCheck);
-        StartCoroutine(SetWaypoint());
+        _moveCorutine = null;
+        _moveCorutine = StartCoroutine(SetWaypoint());
     }
 
     bool DistanceCheck()
@@ -63,4 +66,19 @@ public class BaseEnemy : MonoBehaviour
         return Vector3.Distance(transform.position, EnemyPath.Waypoints[_waypointCounter].position) < 2f;
     }
 
+    public void TakeDamage(float damage)
+    {
+        Heals = Heals - damage;
+        if (Heals < 0) UnitDie();
+    }
+
+    void UnitDie()
+    {
+        _signalBus.Fire(new EnemyDieSignal(this));
+        if (_moveCorutine != null)
+        {
+            StopCoroutine(_moveCorutine);
+        }
+        Destroy(gameObject);
+    }
 }

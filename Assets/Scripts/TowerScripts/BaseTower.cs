@@ -7,17 +7,44 @@ public class BaseTower : MonoBehaviour
 {
     [SerializeField] Transform _rotateObject;
     [SerializeField] Transform _shootSpawnPoint;
+    [SerializeField] Transform _bulletContainer;
     public Vector3 offset;
-    [SerializeField] TowerStats _towerStats;
+    public TowerStats towerStats;
     [HideInInspector] public BaseEnemy targetEnemy;
-    [HideInInspector] public List<BaseEnemy> enemiesInRange;
+    [HideInInspector] public List<BaseEnemy> enemiesInRange = new List<BaseEnemy>();
     float _timeToShoot = 0;
     float _enemyCheckDelay = 0.25f;
-    float _turnSpeed = 5;
+    float _turnSpeed = 15;
     Coroutine _searchCorutine;
     Coroutine _rotateCorutine;
     Coroutine _shootCorutine;
     AAttackPriority _priority = new NearyLock();
+    int counter = 0;
+    System.Type _attackTypeContainer;
+    System.Type attackType
+    {
+        get
+        {
+            if (_attackTypeContainer == null)
+            {
+                string towerAttackType = towerStats.AttackType.ToString();
+                _attackTypeContainer = System.Type.GetType(towerAttackType);
+            }
+            return _attackTypeContainer;
+        }
+    }
+    private ATowerAttack _towerAttack
+    {
+        get
+        {
+            object[] tower = new object[] { this };
+            return (ATowerAttack)System.Activator.CreateInstance(attackType, tower);
+        }
+    }
+
+    Queue<Bullet> _pool = new Queue<Bullet>();
+    int _bulletCounter;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,13 +64,13 @@ public class BaseTower : MonoBehaviour
 
     IEnumerator FindEnemiesInRange(float checkDelay)
     {
-        if (targetEnemy != null && Vector3.Distance(targetEnemy.transform.position, transform.position) > _towerStats.attackRange)
+        if (targetEnemy != null && Vector3.Distance(targetEnemy.transform.position, transform.position) > towerStats.attackRange)
         {
             targetEnemy = null;
         }
         if (WaveSpawner.enemyList.Count > 0)
         {
-            enemiesInRange = WaveSpawner.enemyList.FindAll(x => Vector3.Distance(x.transform.position, transform.position) <= _towerStats.attackRange);
+            enemiesInRange = WaveSpawner.enemyList.FindAll(x => Vector3.Distance(x.transform.position, transform.position) <= towerStats.attackRange);
         }
         targetEnemy = _priority.GetTarget(this);
         if (_rotateCorutine != null)
@@ -52,7 +79,12 @@ public class BaseTower : MonoBehaviour
             _rotateCorutine = null;
         }
         _rotateCorutine = StartCoroutine(RotateObject());
-        _shootCorutine =  StartCoroutine(TryShoot());
+        if (_shootCorutine != null)
+        {
+            StopCoroutine(_shootCorutine);
+            _shootCorutine = null;
+        }
+        _shootCorutine = StartCoroutine(TryShoot());
         yield return new WaitForSeconds(checkDelay);
         _searchCorutine = null;
         _searchCorutine = StartCoroutine(FindEnemiesInRange(checkDelay));
@@ -64,21 +96,56 @@ public class BaseTower : MonoBehaviour
         yield return new WaitWhile(() => targetEnemy == null);
 
 
-        GameObject bullet = Instantiate(_towerStats.bulletPrefab, this.transform);
-        _timeToShoot = _towerStats.attackSpeed;
-        StartCoroutine(ShootDelay());
+        Bullet bullet = GetBullet();
+        bullet.Init(_towerAttack, targetEnemy.transform, _shootSpawnPoint.transform.position, _pool);
+        _timeToShoot = towerStats.attackSpeed;
+        StartCoroutine(ShootDelayTimer());
 
     }
 
-    IEnumerator ShootDelay()
+    Bullet GetBullet()
+    {
+        if (_pool.Count < 1)
+        {
+            IncreesePool();
+        }
+        return _pool.Dequeue();
+    }
+
+    void IncreesePool()
+    {
+        int startBulletCount = 5;
+        int bulletToAdd = 0;
+        if (_bulletCounter == 0)
+        {
+            bulletToAdd = startBulletCount;
+        }
+        else
+        {
+            bulletToAdd = Mathf.FloorToInt(_bulletCounter * 0.2f);
+        }
+        _bulletCounter += bulletToAdd;
+        for (int i = 0; i < bulletToAdd; i++)
+        {
+            GameObject bulletObj = Instantiate(towerStats.bulletPrefab, _shootSpawnPoint.transform.position, towerStats.bulletPrefab.transform.rotation, _bulletContainer);
+            bulletObj.name = "bullet " + counter;
+            bulletObj.SetActive(false);
+            counter++;
+            Bullet bullet = bulletObj.GetComponent<Bullet>();
+            _pool.Enqueue(bullet);
+        }
+    }
+
+    IEnumerator ShootDelayTimer()
     {
         if (_timeToShoot < 0.000001f)
         {
             _timeToShoot = 0;
-            yield return new WaitUntil(() => _timeToShoot > 0);
+            yield break;
         }
         yield return null;
         _timeToShoot -= Time.deltaTime;
+        StartCoroutine(ShootDelayTimer());
     }
 
 
@@ -99,6 +166,6 @@ public class BaseTower : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _towerStats.attackRange);
+        Gizmos.DrawWireSphere(transform.position, towerStats.attackRange);
     }
 }
