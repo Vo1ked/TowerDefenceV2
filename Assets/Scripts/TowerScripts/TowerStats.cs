@@ -26,9 +26,6 @@ public class TowerStats : ScriptableObject
     public float sellCost;
     public List<TowerStats> upgradeTo;
     public TowerAttackType AttackType;
-    public enum TowerAttackType
-    {
-        StraightShoot,
-    }
+
 }
 

@@ -23,8 +23,8 @@ MonoBehaviour:
     critMultiplier: 1
   attackRange: 10
   attackSpeed: 0.5
-  bulletSpeed: 20
+  bulletSpeed: 30
   cost: 20
   sellCost: 10
   upgradeTo: []
-  AttackType: 0
+  AttackType: 1

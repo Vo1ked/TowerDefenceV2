@@ -1,5 +1,14 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// all attack types
+/// </summary>
+public enum TowerAttackType //add to this enum all class successor ATowerAttack
+{
+    StraightShoot,
+    AimShoot
+}
+
 public abstract class ATowerAttack 
 {
     protected BaseTower tower;
@@ -15,7 +24,7 @@ public abstract class ATowerAttack
 
     public abstract void OnColliderHit(Collider col);
 
-    public float GetDamage()
+    public virtual float GetDamage()
     {
         float dice = Random.Range(0, 1f);
         float damage = Random.Range(tower.towerStats.Damage.min, tower.towerStats.Damage.max);
@@ -26,5 +35,6 @@ public abstract class ATowerAttack
         }
         else return damage;
     }
+
 
 }
