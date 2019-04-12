@@ -10,3 +10,12 @@ public class EnemyDieSignal
         this.enemy = enemy;
     }
 } 
+public class CellClickSignal
+{
+    public readonly Cell selectedCell;
+    public CellClickSignal(Cell cell)
+    {
+        selectedCell = cell;
+    }
+
+}

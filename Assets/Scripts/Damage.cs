@@ -9,7 +9,4 @@ public class Damage
     public float critChance = 0;
     public float critMultiplier = 1;
 
-
-
-
 }

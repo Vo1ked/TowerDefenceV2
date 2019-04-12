@@ -9,9 +9,5 @@ public class Goblin : BaseEnemy
     {
         Init();       
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }

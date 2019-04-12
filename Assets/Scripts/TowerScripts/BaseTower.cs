@@ -51,11 +51,6 @@ public class BaseTower : MonoBehaviour
         _searchCorutine = StartCoroutine(FindEnemiesInRange(_enemyCheckDelay));
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     void FindEnemy()
     {
@@ -92,8 +87,10 @@ public class BaseTower : MonoBehaviour
 
     IEnumerator TryShoot()
     {
-        yield return new WaitWhile(() => _timeToShoot > 0);
-        yield return new WaitWhile(() => targetEnemy == null);
+        var waitShoot = new WaitWhile(() => _timeToShoot > 0);
+        var waitEnemy = new WaitWhile(() => targetEnemy == null);
+        yield return waitShoot;
+        yield return waitEnemy;
 
 
         Bullet bullet = GetBullet();

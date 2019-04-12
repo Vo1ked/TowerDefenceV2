@@ -4,12 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class MainMenuController : MonoBehaviour
+public class MainMenuController : MonoBehaviour, IUIWindow
 {
 
     [SerializeField] Button _start;
     [SerializeField] Button _settings;
     [SerializeField] Button _quit;
+
+    public string Name => "MainMenu";
 
     private void Start()
     {
@@ -36,5 +38,10 @@ public class MainMenuController : MonoBehaviour
     #else
             Application.Quit();
     #endif
+    }
+
+    public void SetWindow(bool isEnable)
+    {
+        gameObject.SetActive(isEnable);
     }
 }

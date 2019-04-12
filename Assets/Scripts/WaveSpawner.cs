@@ -65,12 +65,14 @@ public class WaveSpawner : MonoBehaviour
 
     IEnumerator BetweenWaveDelay(System.Action OnComplete = null)
     {
-        yield return new WaitWhile(() => enemyList.Count > 0);
+        CustomYieldInstruction waitWhile = new WaitWhile(() => enemyList.Count > 0);
+        yield return waitWhile;
         OnComplete?.Invoke();
     }
 
     IEnumerator SpawnWave(Wave currentWawe, System.Action OnComplete = null)
     {
+        YieldInstruction wait = new WaitForSeconds(currentWawe.BetweenUnitsDelay);
         while (_unitsToSpawn > 0)
         {
             Units unit = currentWawe.UnitsInWave[Random.Range(0, currentWawe.UnitsInWave.Count)];
@@ -86,15 +88,9 @@ public class WaveSpawner : MonoBehaviour
                 unit.EnemiesLeft--;
                 enemyList.Add(enemy);
             }
-            yield return new WaitForSeconds(currentWawe.BetweenUnitsDelay);
+            yield return wait;
         }
         OnComplete?.Invoke();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
 
