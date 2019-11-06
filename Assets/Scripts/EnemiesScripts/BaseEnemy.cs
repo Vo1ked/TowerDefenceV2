@@ -41,7 +41,7 @@ public class BaseEnemy : MonoBehaviour
         _waypointCounter++;
         if (_waypointCounter >= EnemyPath.Waypoints.Count)
         {
-            UnitDie();
+            UnitFinishPath();
             yield break;
         }
         Move();
@@ -64,6 +64,17 @@ public class BaseEnemy : MonoBehaviour
     void UnitDie()
     {
         _signalBus.Fire(new EnemyDieSignal(this));
+        DestroyUnit();
+    }
+
+    void UnitFinishPath()
+    {
+        _signalBus.Fire(new EnemyFinishPathSignal(this));
+        DestroyUnit();
+    }
+
+    private void DestroyUnit()
+    {
         if (_moveCorutine != null)
         {
             StopCoroutine(_moveCorutine);

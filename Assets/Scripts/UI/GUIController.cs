@@ -13,10 +13,23 @@ public class GUIController : MonoBehaviour,IUIWindow
 
     public string Name => "GUI";
 
+    public static GUIController Instance { get; private set; }
+
     public void SetWindow(bool isEnable)
     {
         gameObject.SetActive(isEnable);
     }
+
+    void Awake()
+    {
+        Instance = this;
+    }
+
+    public void SetCurrentWave(int wave)
+    {
+        _waveCounter.text = wave.ToString();
+    }
+
 
     // Start is called before the first frame update
     void Start()

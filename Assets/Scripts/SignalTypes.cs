@@ -9,7 +9,18 @@ public class EnemyDieSignal
     {
         this.enemy = enemy;
     }
-} 
+}
+
+public class EnemyFinishPathSignal
+{
+    public readonly BaseEnemy enemy;
+
+    public EnemyFinishPathSignal(BaseEnemy enemy)
+    {
+        this.enemy = enemy;
+    }
+}
+
 public class CellClickSignal
 {
     public readonly Cell selectedCell;

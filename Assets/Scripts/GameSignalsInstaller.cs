@@ -8,6 +8,7 @@ public class GameSignalsInstaller : Installer<GameSignalsInstaller>
         SignalBusInstaller.Install(Container);
 
         Container.DeclareSignal<EnemyDieSignal>();
+        Container.DeclareSignal<EnemyFinishPathSignal>();
         Container.DeclareSignal<CellClickSignal>();
 
     }

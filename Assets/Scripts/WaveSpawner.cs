@@ -11,7 +11,19 @@ public class WaveSpawner : MonoBehaviour
     [Inject] SignalBus _signalBus;
 
     [SerializeField] List<Wave> waves;
-    public int CurrentWaveIndex { get; private set; } = 0;
+    private int _currentWaveIndex = 0;
+    public int CurrentWaveIndex
+    {
+        get
+        {
+            return _currentWaveIndex;
+        }
+        private set
+        {
+            _currentWaveIndex = value;
+            GUIController.Instance.SetCurrentWave(_currentWaveIndex);
+        }
+    }
     [SerializeField] Transform _enemiesContainer;
     public static List<BaseEnemy> enemyList { get; private set; } = new List<BaseEnemy>();
     [SerializeField] Wave _currentWave;
@@ -33,7 +45,7 @@ public class WaveSpawner : MonoBehaviour
 
     void RemoveEnemyFromList(BaseEnemy enemy)
     {
-        BaseEnemy curEnemy =  enemyList.Find(x=> x.id == enemy.id);
+        BaseEnemy curEnemy = enemyList.Find(x => x.id == enemy.id);
         enemyList.Remove(curEnemy);
     }
 
