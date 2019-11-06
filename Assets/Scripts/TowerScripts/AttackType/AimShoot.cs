@@ -26,9 +26,8 @@ public class AimShoot : ATowerAttack
         }
     }
 
-    public override void OnColliderHit(Collider col)
+    public override void OnColliderHit(BaseEnemy enemy)
     {
-        BaseEnemy enemy = col.GetComponent<BaseEnemy>();
         if(enemy != null)
         {
             enemy.TakeDamage(GetDamage());

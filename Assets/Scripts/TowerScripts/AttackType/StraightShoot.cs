@@ -29,9 +29,8 @@ public class StraightShoot : ATowerAttack
         }
     }
 
-    public override void OnColliderHit(Collider col)
+    public override void OnColliderHit(BaseEnemy enemy)
     {
-        BaseEnemy enemy = col.GetComponentInParent<BaseEnemy>();
         if (enemy != null)
         {
             enemy.TakeDamage(GetDamage());

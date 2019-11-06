@@ -17,5 +17,12 @@ public class CellClickSignal
     {
         selectedCell = cell;
     }
+}
 
+public class StartGameSignal
+{
+    public StartGameSignal()
+    {
+
+    }
 }

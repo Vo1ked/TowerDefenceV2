@@ -22,7 +22,7 @@ public abstract class ATowerAttack
 
     public abstract void Attack(Transform target, Bullet bullet);
 
-    public abstract void OnColliderHit(Collider col);
+    public abstract void OnColliderHit(BaseEnemy col);
 
     public virtual float GetDamage()
     {

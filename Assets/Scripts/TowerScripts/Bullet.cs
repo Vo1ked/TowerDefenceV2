@@ -21,7 +21,8 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        _aTowerAttack.OnColliderHit(other);
+        var hittedEnemy = other.GetComponentInParent<BaseEnemy>();
+        _aTowerAttack.OnColliderHit(hittedEnemy);
 
     }
 

@@ -9,5 +9,4 @@ public class Goblin : BaseEnemy
     {
         Init();       
     }
-
 }

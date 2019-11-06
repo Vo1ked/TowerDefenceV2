@@ -10,18 +10,7 @@ public class BaseEnemy : MonoBehaviour
     [Inject] SignalBus _signalBus;
     [SerializeField] EnemyStats stats;
     public float Heals { get; private set; }
-    int _id;
-    public int id
-    {
-        get
-        {
-            return _id;
-        }
-        set
-        {
-            _id = value;
-        }
-    }
+    public int id { get; set; }
     Coroutine _moveCorutine;
 
 

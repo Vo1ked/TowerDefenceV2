@@ -2,14 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Zenject;
 
 public class UIController : MonoBehaviour
 {
+    [Inject] SignalBus _signalBus;
 
     List<IUIWindow> _uIWindows;
+    public static UIController Instance { get; private set; }
+
     private void Awake()
     {
         _uIWindows = new List<IUIWindow>();
+        Instance = this;
     }
 
     // Start is called before the first frame update
@@ -30,18 +35,18 @@ public class UIController : MonoBehaviour
 
     }
 
-    void HideAllWindow()
+    public void HideAllWindow()
     {
         _uIWindows.ForEach(x => x.SetWindow(false));
     }
 
-    void ShowMainMenu()
+    public void ShowMainMenu()
     {
         HideAllWindow();
         _uIWindows.Find(x => x.Name == "MainMenu").SetWindow(true);
     }
 
-    void ShowGui()
+    public void ShowGui()
     {
         HideAllWindow();
         _uIWindows.Find(x => x.Name == "GUI").SetWindow(true);
