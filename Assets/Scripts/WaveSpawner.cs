@@ -30,6 +30,7 @@ public class WaveSpawner : MonoBehaviour
     void Start()
     {
         _signalBus.Subscribe<EnemyDieSignal>(x => RemoveEnemyFromList(x.enemy));
+        _signalBus.Subscribe<EnemyFinishPathSignal>(x => RemoveEnemyFromList(x.enemy));
         Init();
     }
 
