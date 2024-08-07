@@ -65,8 +65,8 @@ public class BaseTower : MonoBehaviour
         if (WaveSpawner.enemyList.Count > 0)
         {
             enemiesInRange = WaveSpawner.enemyList.FindAll(x => Vector3.Distance(x.transform.position, transform.position) <= towerStats.attackRange);
+            targetEnemy = _priority.GetTarget(this);
         }
-        targetEnemy = _priority.GetTarget(this);
         if (_rotateCorutine != null)
         {
             StopCoroutine(_rotateCorutine);
