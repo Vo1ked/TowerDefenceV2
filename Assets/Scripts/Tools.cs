@@ -21,7 +21,7 @@ namespace VolkTools
 
         public static T ReturnRandomByWeight<T>(T[] objectsToRandom, float[] objectsWeight)
         {
-            // ReturnRandomByWeight(new uint[4]{1,2,3,5},new float[4]{ 50,10,20,5})  - ������
+            // ReturnRandomByWeight(new uint[4]{1,2,3,5},new float[4]{ 50,10,20,5}) 
             if (objectsToRandom.Length < 1 || objectsWeight.Length < 1)
             {
                 Debug.LogError("Lenght one of array has 0");

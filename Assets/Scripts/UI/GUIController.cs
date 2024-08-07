@@ -22,32 +22,32 @@ public class GUIController : MonoBehaviour,IUIWindow
 
     void Start()
     {
-        _signalBus.Subscribe<WaveChangedSignal>(x => SetCurrentWave(x.wave));
-        _signalBus.Subscribe<EnemyFinishPathSignal>(x => RemoveHeals(x.enemy));
-        _signalBus.Subscribe<EnemyDieSignal>(x => AddGold(x.enemy));
+        _signalBus.Subscribe<WaveChangedSignal>(SetCurrentWave);
+        _signalBus.Subscribe<EnemyFinishPathSignal>(RemoveHeals);
+        _signalBus.Subscribe<EnemyDieSignal>(AddGold);
+    }
+    
+    private void OnDestroy()
+    {
+        _signalBus.TryUnsubscribe<WaveChangedSignal>(SetCurrentWave);
+        _signalBus.TryUnsubscribe<EnemyFinishPathSignal>(RemoveHeals);
+        _signalBus.TryUnsubscribe<EnemyDieSignal>(AddGold);
     }
 
-    private void AddGold(BaseEnemy enemy)
+    private void AddGold(EnemyDieSignal enemy)
     {
-        _gold += enemy.GiveGold();
+        _gold += enemy.enemy.GiveGold();
         _goldConter.text = _gold.ToString("0");
     }
 
-    private void RemoveHeals(BaseEnemy enemy)
+    private void RemoveHeals(EnemyFinishPathSignal enemy)
     {
-        _heals -= enemy.Damage();
+        _heals -= enemy.enemy.Damage();
         _healsConter.text = _heals.ToString("0");
     }
-
-    private void OnDestroy()
+    
+    public void SetCurrentWave(WaveChangedSignal wave)
     {
-        _signalBus.TryUnsubscribe<WaveChangedSignal>(x => SetCurrentWave(x.wave));
-        _signalBus.TryUnsubscribe<EnemyFinishPathSignal>(x => RemoveHeals(x.enemy));
-        _signalBus.TryUnsubscribe<EnemyDieSignal>(x => AddGold(x.enemy));
-    }
-
-    public void SetCurrentWave(int wave)
-    {
-        _waveCounter.text = wave.ToString();
+        _waveCounter.text = wave.wave.ToString();
     }
 }

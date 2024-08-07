@@ -44,3 +44,12 @@ public class WaveChangedSignal
         this.wave = wave;
     }
 }
+
+public class PauseSignal
+{
+    public readonly bool pause;
+    public PauseSignal(bool pause)
+    {
+        this.pause = pause;
+    }
+}

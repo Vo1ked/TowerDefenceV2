@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -29,9 +31,15 @@ public class WaveSpawner : MonoBehaviour
     
     void Start()
     {
-        _signalBus.Subscribe<EnemyDieSignal>(x => RemoveEnemyFromList(x.enemy));
-        _signalBus.Subscribe<EnemyFinishPathSignal>(x => RemoveEnemyFromList(x.enemy));
+        _signalBus.Subscribe<EnemyDieSignal>(RemoveEnemyFromList);
+        _signalBus.Subscribe<EnemyFinishPathSignal>(RemoveEnemyFromList);
         Init();
+    }
+
+    private void OnDestroy()
+    {
+        _signalBus.TryUnsubscribe<EnemyDieSignal>(RemoveEnemyFromList);
+        _signalBus.TryUnsubscribe<EnemyFinishPathSignal>(RemoveEnemyFromList);
     }
 
     void Init()
@@ -41,9 +49,15 @@ public class WaveSpawner : MonoBehaviour
         StartWave(waves[CurrentWaveIndex]);
     }
 
-    void RemoveEnemyFromList(BaseEnemy enemy)
+    void RemoveEnemyFromList(EnemyDieSignal enemy)
     {
-        BaseEnemy curEnemy = enemyList.Find(x => x.id == enemy.id);
+        BaseEnemy curEnemy = enemyList.Find(x => x.id == enemy.enemy.id);
+        enemyList.Remove(curEnemy);
+    }
+    
+    void RemoveEnemyFromList(EnemyFinishPathSignal enemy)
+    {
+        BaseEnemy curEnemy = enemyList.Find(x => x.id == enemy.enemy.id);
         enemyList.Remove(curEnemy);
     }
 

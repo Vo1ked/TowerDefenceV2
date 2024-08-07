@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 public class BaseTower : MonoBehaviour
 {
@@ -25,11 +24,11 @@ public class BaseTower : MonoBehaviour
     {
         get
         {
-            if (_attackTypeContainer == null)
-            {
-                string towerAttackType = towerStats.AttackType.ToString();
-                _attackTypeContainer = System.Type.GetType(towerAttackType);
-            }
+            if (_attackTypeContainer != null) 
+                return _attackTypeContainer;
+            
+            string towerAttackType = towerStats.AttackType.ToString();
+            _attackTypeContainer = System.Type.GetType(towerAttackType);
             return _attackTypeContainer;
         }
     }
@@ -48,12 +47,6 @@ public class BaseTower : MonoBehaviour
     void Start()
     {
         _searchCorutine = StartCoroutine(FindEnemiesInRange(_enemyCheckDelay));
-    }
-
-
-    void FindEnemy()
-    {
-
     }
 
     private IEnumerator FindEnemiesInRange(float checkDelay)
