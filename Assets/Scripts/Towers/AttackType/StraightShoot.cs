@@ -8,7 +8,6 @@ public class StraightShoot : ATowerAttack
     Bullet _bullet;
 
     bool _hit = false;
-    Coroutine _moveCorutine;
     public StraightShoot() { }
 
     public StraightShoot(BaseTower tower) : base(tower) { }
@@ -17,7 +16,7 @@ public class StraightShoot : ATowerAttack
     {
         _direction = (target.position - bullet.transform.position).normalized;
         _bullet = bullet;
-       _moveCorutine = _bullet.StartCoroutine(StraightMove());
+       _bullet.CoroutineController.StartManagedCoroutine(StraightMove());
     }
 
     private IEnumerator StraightMove()

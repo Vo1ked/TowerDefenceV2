@@ -8,6 +8,8 @@ public class BaseEnemy : MonoBehaviour
 {
 
     [Inject] SignalBus _signalBus;
+    [Inject] CoroutineController _coroutineController;
+
     [SerializeField] EnemyStats stats;
     public float Heals { get; private set; }
     public int id { get; set; }
@@ -20,6 +22,12 @@ public class BaseEnemy : MonoBehaviour
     public void Awake()
     {
         meshAgent = GetComponent<NavMeshAgent>();
+        _signalBus.Subscribe<PauseSignal>(IsPaused);
+    }
+
+    private void IsPaused(PauseSignal pause)
+    {
+        meshAgent.isStopped = pause.pause;
     }
 
     public virtual void Init()
@@ -28,7 +36,7 @@ public class BaseEnemy : MonoBehaviour
         meshAgent.speed = stats.speed;
         meshAgent.enabled = true;
         meshAgent.Warp(EnemyPath.Waypoints[_waypointCounter].position);
-        _moveCorutine = StartCoroutine(SetWaypoint());
+        _moveCorutine = _coroutineController.StartManagedCoroutine(SetWaypoint());
     }
 
     public virtual void Move()
@@ -47,7 +55,7 @@ public class BaseEnemy : MonoBehaviour
         Move();
         yield return new WaitUntil(DistanceCheck);
         _moveCorutine = null;
-        _moveCorutine = StartCoroutine(SetWaypoint());
+        _moveCorutine = _coroutineController.StartManagedCoroutine(SetWaypoint());
     }
     
     public void TakeDamage(float damage)
@@ -89,8 +97,9 @@ public class BaseEnemy : MonoBehaviour
     {
         if (_moveCorutine != null)
         {
-            StopCoroutine(_moveCorutine);
+            _coroutineController.StopManagedCoroutine(_moveCorutine);
         }
+        _signalBus.TryUnsubscribe<PauseSignal>(IsPaused);
         Destroy(gameObject);
     }
 }

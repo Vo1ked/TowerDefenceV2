@@ -2544,6 +2544,7 @@ GameObject:
   m_Component:
   - component: {fileID: 269751151}
   - component: {fileID: 269751152}
+  - component: {fileID: 269751153}
   m_Layer: 0
   m_Name: SceneContext
   m_TagString: Untagged
@@ -2579,7 +2580,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scriptableObjectInstallers: []
-  _monoInstallers: []
+  _monoInstallers:
+  - {fileID: 269751153}
   _installerPrefabs: []
   _autoRun: 1
   OnPreInstall:
@@ -2597,6 +2599,18 @@ MonoBehaviour:
   _parentNewObjectsUnderSceneContext: 0
   _contractNames: []
   _parentContractNames: []
+--- !u!114 &269751153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 269751150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b6300f6d69442ab8b2efe5b77292f19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &270177028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9376,7 +9390,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2d0a332ca43022e438e208fd9c409f09, type: 2}
   - {fileID: 11400000, guid: b82126e933ac0d84da9d8409458ca754, type: 2}
   _enemiesContainer: {fileID: 2065313391}
-  _currentWave: {fileID: 0}
 --- !u!1001 &1015267717
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18631,7 +18644,6 @@ GameObject:
   - component: {fileID: 2139867144}
   - component: {fileID: 2139867143}
   - component: {fileID: 2139867142}
-  - component: {fileID: 2139867141}
   m_Layer: 0
   m_Name: Controllers
   m_TagString: Untagged
@@ -18639,18 +18651,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2139867141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2139867140}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22b27aa77ab8b7b4baa2d48c8e3792c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2139867142
 MonoBehaviour:
   m_ObjectHideFlags: 0

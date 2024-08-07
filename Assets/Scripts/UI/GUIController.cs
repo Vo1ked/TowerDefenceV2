@@ -12,6 +12,7 @@ public class GUIController : MonoBehaviour,IUIWindow
     [SerializeField] TextMeshProUGUI _goldConter;
     private float _gold;
     private float _heals;
+    private bool _isPause;
     public string Name => "GUI";
     
 
@@ -25,6 +26,13 @@ public class GUIController : MonoBehaviour,IUIWindow
         _signalBus.Subscribe<WaveChangedSignal>(SetCurrentWave);
         _signalBus.Subscribe<EnemyFinishPathSignal>(RemoveHeals);
         _signalBus.Subscribe<EnemyDieSignal>(AddGold);
+        _pauseButton.onClick.AddListener(PauseClicked);
+    }
+
+    private void PauseClicked()
+    {
+        _isPause = !_isPause;
+        _signalBus.Fire(new PauseSignal(_isPause));
     }
     
     private void OnDestroy()

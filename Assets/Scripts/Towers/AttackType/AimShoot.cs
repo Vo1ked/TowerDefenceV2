@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using UnityEngine;
+using Zenject;
 
 public class AimShoot : ATowerAttack
 {
+    [Inject] CoroutineController _coroutineController;
     Transform _target;
     Bullet _bullet;
     bool hit = false;
@@ -13,7 +15,7 @@ public class AimShoot : ATowerAttack
     {
         _bullet = bullet;
         _target = target;
-        bullet.StartCoroutine(AimMove());
+        bullet.CoroutineController.StartManagedCoroutine(AimMove());
     }
 
     IEnumerator AimMove()

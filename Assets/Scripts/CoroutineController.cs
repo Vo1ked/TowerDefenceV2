@@ -35,6 +35,12 @@ public class CoroutineController : MonoBehaviour
         }
     }
 
+    public void StopManagedCoroutine(Coroutine coroutine)
+    {
+        StopCoroutine(coroutine);
+    }
+    
+
     private void OnDestroy()
     {
         StopAllCoroutines();

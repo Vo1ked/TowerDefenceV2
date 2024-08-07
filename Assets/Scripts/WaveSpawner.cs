@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -10,6 +8,7 @@ public class WaveSpawner : MonoBehaviour
 {
     [Inject] DiContainer _diContainer;
     [Inject] SignalBus _signalBus;
+    [Inject] CoroutineController _coroutineController;
 
     [SerializeField] List<Wave> waves;
     private int _currentWaveIndex = 0;
@@ -24,7 +23,7 @@ public class WaveSpawner : MonoBehaviour
     }
     [SerializeField] Transform _enemiesContainer;
     public static List<BaseEnemy> enemyList { get; private set; } = new List<BaseEnemy>();
-    [ReadOnly] Wave _currentWave;
+    [SerializeField] Wave _currentWave;
     int _unitsToSpawn;
     int enemyId = 0;
     System.Action OnWaveComplete;
@@ -70,12 +69,12 @@ public class WaveSpawner : MonoBehaviour
             item.EnemiesLeft = item.EnemiesCount;
         }
         _currentWave = currentWave;
-        StartCoroutine(SpawnWave(_currentWave, OnWaveComplete));
+        _coroutineController.StartManagedCoroutine(SpawnWave(_currentWave, OnWaveComplete));
     }
 
     void SpawnNextWave()
     {
-        StartCoroutine(BetweenWaveDelay(NextWave));
+        _coroutineController.StartManagedCoroutine(BetweenWaveDelay(NextWave));
     }
     void NextWave()
     {

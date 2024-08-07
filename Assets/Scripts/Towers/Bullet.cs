@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class Bullet : MonoBehaviour
 {
-
+    [Inject] public CoroutineController CoroutineController;
     ATowerAttack _aTowerAttack;
     Queue<Bullet> _pool;
 
@@ -15,7 +16,7 @@ public class Bullet : MonoBehaviour
         _pool = pool;
         transform.position = spawnPoint;
         _aTowerAttack.Attack(target,this);
-        StartCoroutine(LifeTimerDelay());
+        CoroutineController.StartManagedCoroutine(LifeTimerDelay());
     }
 
 

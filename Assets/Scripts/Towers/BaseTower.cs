@@ -1,9 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class BaseTower : MonoBehaviour
 {
+    [Inject] CoroutineController _coroutineController;
+    [Inject] DiContainer _diContainer;
+
+    
     [SerializeField] Transform _rotateObject;
     [SerializeField] Transform _shootSpawnPoint;
     [SerializeField] Transform _bulletContainer;
@@ -46,7 +51,7 @@ public class BaseTower : MonoBehaviour
 
     void Start()
     {
-        _searchCorutine = StartCoroutine(FindEnemiesInRange(_enemyCheckDelay));
+        _searchCorutine = _coroutineController.StartManagedCoroutine(FindEnemiesInRange(_enemyCheckDelay));
     }
 
     private IEnumerator FindEnemiesInRange(float checkDelay)
@@ -62,19 +67,19 @@ public class BaseTower : MonoBehaviour
         }
         if (_rotateCorutine != null)
         {
-            StopCoroutine(_rotateCorutine);
+            _coroutineController.StopManagedCoroutine(_rotateCorutine);
             _rotateCorutine = null;
         }
-        _rotateCorutine = StartCoroutine(RotateObject());
+        _rotateCorutine = _coroutineController.StartManagedCoroutine(RotateObject());
         if (_shootCorutine != null)
         {
-            StopCoroutine(_shootCorutine);
+            _coroutineController.StopManagedCoroutine(_shootCorutine);
             _shootCorutine = null;
         }
-        _shootCorutine = StartCoroutine(TryShoot());
+        _shootCorutine = _coroutineController.StartManagedCoroutine(TryShoot());
         yield return new WaitForSeconds(checkDelay);
         _searchCorutine = null;
-        _searchCorutine = StartCoroutine(FindEnemiesInRange(checkDelay));
+        _searchCorutine = _coroutineController.StartManagedCoroutine(FindEnemiesInRange(checkDelay));
     }
 
     IEnumerator TryShoot()
@@ -88,7 +93,7 @@ public class BaseTower : MonoBehaviour
         Bullet bullet = GetBullet();
         bullet.Init(_towerAttack, targetEnemy.transform, _shootSpawnPoint.transform.position, _pool);
         _timeToShoot = towerStats.attackSpeed;
-        StartCoroutine(ShootDelayTimer());
+        _coroutineController.StartManagedCoroutine(ShootDelayTimer());
 
     }
 
@@ -116,7 +121,7 @@ public class BaseTower : MonoBehaviour
         _bulletCounter += bulletToAdd;
         for (int i = 0; i < bulletToAdd; i++)
         {
-            GameObject bulletObj = Instantiate(towerStats.bulletPrefab, _shootSpawnPoint.transform.position, towerStats.bulletPrefab.transform.rotation, _bulletContainer);
+            GameObject bulletObj = _diContainer.InstantiatePrefab(towerStats.bulletPrefab, _shootSpawnPoint.transform.position, towerStats.bulletPrefab.transform.rotation, _bulletContainer);
             bulletObj.name = "bullet " + counter;
             bulletObj.SetActive(false);
             counter++;
@@ -134,7 +139,7 @@ public class BaseTower : MonoBehaviour
         }
         yield return null;
         _timeToShoot -= Time.deltaTime;
-        StartCoroutine(ShootDelayTimer());
+        _coroutineController.StartManagedCoroutine(ShootDelayTimer());
     }
 
 
