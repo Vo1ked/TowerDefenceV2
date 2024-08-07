@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 using Zenject;
 
@@ -10,22 +11,22 @@ public class WaveSpawner : MonoBehaviour
 
     [SerializeField] List<Wave> waves;
     private int _currentWaveIndex = 0;
-    public int CurrentWaveIndex
+    private int CurrentWaveIndex
     {
         get => _currentWaveIndex;
-        private set
+        set
         {
             _currentWaveIndex = value;
-            GUIController.Instance.SetCurrentWave(_currentWaveIndex);
+            _signalBus.Fire(new WaveChangedSignal( _currentWaveIndex));
         }
     }
     [SerializeField] Transform _enemiesContainer;
     public static List<BaseEnemy> enemyList { get; private set; } = new List<BaseEnemy>();
-    [SerializeField] Wave _currentWave;
+    [ReadOnly] Wave _currentWave;
     int _unitsToSpawn;
     int enemyId = 0;
     System.Action OnWaveComplete;
-    // Start is called before the first frame update
+    
     void Start()
     {
         _signalBus.Subscribe<EnemyDieSignal>(x => RemoveEnemyFromList(x.enemy));
@@ -35,6 +36,7 @@ public class WaveSpawner : MonoBehaviour
     void Init()
     {
         OnWaveComplete += SpawnNextWave;
+        CurrentWaveIndex = 0;
         StartWave(waves[CurrentWaveIndex]);
     }
 

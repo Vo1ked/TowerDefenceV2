@@ -49,17 +49,29 @@ public class BaseEnemy : MonoBehaviour
         _moveCorutine = null;
         _moveCorutine = StartCoroutine(SetWaypoint());
     }
+    
+    public void TakeDamage(float damage)
+    {
+        Heals -= damage;
+        if (Heals < 0) UnitDie();
+    }
+
+    public float GiveGold()
+    {
+        return stats.gold;
+    }
+
+    public float Damage()
+    {
+        return stats.damage;
+    }
 
     bool DistanceCheck()
     {
         return Vector3.Distance(transform.position, EnemyPath.Waypoints[_waypointCounter].position) < 2f;
     }
 
-    public void TakeDamage(float damage)
-    {
-        Heals -= damage;
-        if (Heals < 0) UnitDie();
-    }
+
 
     void UnitDie()
     {

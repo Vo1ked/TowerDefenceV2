@@ -34,3 +34,13 @@ public class StartGameSignal
 
     }
 }
+
+public class WaveChangedSignal
+{
+    public readonly int wave;
+
+    public WaveChangedSignal(int wave)
+    {
+        this.wave = wave;
+    }
+}

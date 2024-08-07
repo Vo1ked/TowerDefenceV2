@@ -19,7 +19,7 @@ public class MainMenuController : MonoBehaviour, IUIWindow
 
     void StartGame()
     {
-        SceneManager.LoadSceneAsync("Maze").completed += x => UIController.Instance.ShowGui();
+        SceneManager.LoadSceneAsync("Maze");
     }
 
     void OpenSettings()

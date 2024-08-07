@@ -9,5 +9,6 @@ public class GameSignalsInstaller : Installer<GameSignalsInstaller>
         Container.DeclareSignal<EnemyDieSignal>();
         Container.DeclareSignal<EnemyFinishPathSignal>();
         Container.DeclareSignal<CellClickSignal>();
+        Container.DeclareSignal<WaveChangedSignal>();
     }
 }
