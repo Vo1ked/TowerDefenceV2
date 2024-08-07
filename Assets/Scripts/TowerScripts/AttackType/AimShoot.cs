@@ -28,11 +28,11 @@ public class AimShoot : ATowerAttack
 
     public override void OnColliderHit(BaseEnemy enemy)
     {
-        if(enemy != null)
-        {
-            enemy.TakeDamage(GetDamage());
-            _bullet.Disable();
-            hit = true;
-        }
+        if (enemy == null) 
+            return;
+        
+        enemy.TakeDamage(GetDamage());
+        _bullet.Disable();
+        hit = true;
     }
 }

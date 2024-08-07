@@ -17,10 +17,10 @@ public class StraightShoot : ATowerAttack
     {
         _direction = (target.position - bullet.transform.position).normalized;
         _bullet = bullet;
-       _moveCorutine = _bullet.StartCoroutine(StraughtMove());
+       _moveCorutine = _bullet.StartCoroutine(StraightMove());
     }
 
-    IEnumerator StraughtMove()
+    private IEnumerator StraightMove()
     {
         while (!_hit)
         {
@@ -31,12 +31,11 @@ public class StraightShoot : ATowerAttack
 
     public override void OnColliderHit(BaseEnemy enemy)
     {
-        if (enemy != null)
-        {
-            enemy.TakeDamage(GetDamage());
-            _hit = true;
-            _bullet.Disable();
-        }
-
+        if (enemy == null)
+            return;
+        
+        enemy.TakeDamage(GetDamage());
+        _hit = true;
+        _bullet.Disable();
     }
 }

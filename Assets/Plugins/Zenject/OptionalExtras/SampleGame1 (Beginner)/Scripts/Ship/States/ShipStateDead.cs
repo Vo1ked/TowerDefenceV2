@@ -1,8 +1,6 @@
 using System;
 using UnityEngine;
-using System.Collections;
-using Zenject;
-using Random=UnityEngine.Random;
+using Random = UnityEngine.Random;
 
 namespace Zenject.Asteroids
 {
@@ -34,9 +32,7 @@ namespace Zenject.Asteroids
         {
             _ship.MeshRenderer.enabled = false;
 
-#if !UNITY_2018
             _ship.ParticleEmitter.gameObject.SetActive(false);
-#endif
 
             _explosion = _explosionFactory.Create().gameObject;
             _explosion.transform.position = _ship.Position;
@@ -59,9 +55,7 @@ namespace Zenject.Asteroids
         {
             _ship.MeshRenderer.enabled = true;
 
-#if !UNITY_2018
             _ship.ParticleEmitter.gameObject.SetActive(true);
-#endif
 
             GameObject.Destroy(_explosion);
             GameObject.Destroy(_shipBroken);

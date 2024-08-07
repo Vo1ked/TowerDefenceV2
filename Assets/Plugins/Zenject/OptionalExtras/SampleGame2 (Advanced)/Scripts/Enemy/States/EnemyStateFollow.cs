@@ -1,6 +1,6 @@
 using System;
-using ModestTree;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Zenject.SpaceFighter
 {
@@ -37,7 +37,7 @@ namespace Zenject.SpaceFighter
 
         public void EnterState()
         {
-            _strafeRight = UnityEngine.Random.Range(0, 1) == 0;
+            _strafeRight = Random.Range(0, 1) == 0;
             _lastStrafeChangeTime = Time.realtimeSinceStartup;
         }
 

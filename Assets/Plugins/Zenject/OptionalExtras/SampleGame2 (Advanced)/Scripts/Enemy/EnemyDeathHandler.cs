@@ -1,7 +1,5 @@
 using System;
-using ModestTree;
 using UnityEngine;
-using Zenject;
 
 namespace Zenject.SpaceFighter
 {

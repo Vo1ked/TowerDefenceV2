@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Volk/Wave")]
@@ -9,7 +8,6 @@ public class Wave : ScriptableObject
   public float BetweenUnitsDelay = 1; 
 
 }
-
 
 [System.Serializable]
 public class Units

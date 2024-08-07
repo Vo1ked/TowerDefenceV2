@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using ModestTree;
 using UnityEngine;
-using Zenject;
 
 namespace Zenject.SpaceFighter
 {
@@ -18,7 +17,7 @@ namespace Zenject.SpaceFighter
         Idle,
         Attack,
         Follow,
-        None,
+        None
     }
 
     // This class controls the basic "AI" of our enemy
@@ -41,7 +40,7 @@ namespace Zenject.SpaceFighter
             EnemyStateIdle idle, EnemyStateAttack attack, EnemyStateFollow follow)
         {
             _view = view;
-            _states = new List<IEnemyState>()
+            _states = new List<IEnemyState>
             {
                 // This needs to follow the enum order
                 idle, attack, follow

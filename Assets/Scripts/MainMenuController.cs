@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MainMenuController : MonoBehaviour, IUIWindow
 {
-
     [SerializeField] Button _start;
     [SerializeField] Button _settings;
     [SerializeField] Button _quit;
@@ -18,7 +15,6 @@ public class MainMenuController : MonoBehaviour, IUIWindow
         _start.onClick.AddListener(StartGame);
         _settings.onClick.AddListener(OpenSettings);
         _quit.onClick.AddListener(QuitGame);
-        
     }
 
     void StartGame()

@@ -1,9 +1,4 @@
-﻿using System;
-using ModestTree;
-using UnityEngine;
-using Zenject;
-
-namespace Zenject.SpaceFighter
+﻿namespace Zenject.SpaceFighter
 {
     public class EnemyInstaller : Installer<EnemyInstaller>
     {

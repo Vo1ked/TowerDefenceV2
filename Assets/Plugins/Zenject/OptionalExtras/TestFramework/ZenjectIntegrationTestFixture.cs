@@ -1,22 +1,15 @@
 using System;
 using System.Collections;
 using Zenject.Internal;
-
-#if UNITY_EDITOR
-using System.Collections.Generic;
+using ModestTree;
+using Assert = ModestTree.Assert;
 using System.Linq;
 using NUnit.Framework;
 using NUnit.Framework.Interfaces;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using ModestTree;
-#endif
-
-using Assert = ModestTree.Assert;
 
 namespace Zenject
 {
-#if UNITY_EDITOR
     public abstract class ZenjectIntegrationTestFixture
     {
         SceneContext _sceneContext;
@@ -48,7 +41,7 @@ namespace Zenject
         public void Setup()
         {
             Assert.That(Application.isPlaying,
-                "ZenjectIntegrationTestFixture is meant to be used for play mode tests only.  Please ensure your test file '{0}' is outside of the editor folder and try again.", this.GetType());
+                "ZenjectIntegrationTestFixture is meant to be used for play mode tests only.  Please ensure your test file '{0}' is outside of the editor folder and try again.", GetType());
 
             ZenjectTestUtil.DestroyEverythingExceptTestRunner(true);
             StaticContext.Clear();
@@ -68,15 +61,15 @@ namespace Zenject
             Assert.That(!ProjectContext.HasInstance);
 
             var shouldValidate = CurrentTestHasAttribute<ValidateOnlyAttribute>();
-
             ProjectContext.ValidateOnNextRun = shouldValidate;
 
-            Assert.IsNull(_sceneContext);
+            Assert.That(_sceneContext == null);
 
             _sceneContext = SceneContext.Create();
             _sceneContext.Install();
 
             Assert.That(ProjectContext.HasInstance);
+
             Assert.IsEqual(shouldValidate, ProjectContext.Instance.Container.IsValidating);
             Assert.IsEqual(shouldValidate, _sceneContext.Container.IsValidating);
         }
@@ -84,21 +77,8 @@ namespace Zenject
         bool CurrentTestHasAttribute<T>()
             where T : Attribute
         {
-            // tests with double parameters need to have their () removed first
-            var name = TestContext.CurrentContext.Test.FullName;
-
-            // Remove all characters after the first open bracket if there is one
-            int openBracketIndex = name.IndexOf("(");
-
-            if (openBracketIndex != -1)
-            {
-                name = name.Substring(0, openBracketIndex);
-            }
-
-            // Now we can get the substring starting at the last '.'
-            name = name.Substring(name.LastIndexOf(".") + 1);
-
-            return this.GetType().GetMethod(name).GetCustomAttributes(true)
+            return GetType().GetMethod(TestContext.CurrentContext.Test.MethodName)
+                .GetCustomAttributes(true)
                 .Cast<Attribute>().OfType<T>().Any();
         }
 
@@ -172,42 +152,4 @@ namespace Zenject
             _hasEndedInstall = false;
         }
     }
-#else
-    public abstract class ZenjectIntegrationTestFixture
-    {
-        protected DiContainer Container
-        {
-            get
-            {
-                throw CreateException();
-            }
-        }
-
-        Exception CreateException()
-        {
-            return Assert.CreateException(
-                "ZenjectIntegrationTestFixture currently only supports running within unity editor");
-        }
-
-        protected void SkipInstall()
-        {
-            throw CreateException();
-        }
-
-        protected void PreInstall()
-        {
-            throw CreateException();
-        }
-
-        protected void PostInstall()
-        {
-            throw CreateException();
-        }
-
-        protected void DestroyAll()
-        {
-            throw CreateException();
-        }
-    }
-#endif
 }

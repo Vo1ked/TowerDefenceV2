@@ -45,7 +45,6 @@ public class BaseTower : MonoBehaviour
     Queue<Bullet> _pool = new Queue<Bullet>();
     int _bulletCounter;
 
-    // Start is called before the first frame update
     void Start()
     {
         _searchCorutine = StartCoroutine(FindEnemiesInRange(_enemyCheckDelay));
@@ -57,7 +56,7 @@ public class BaseTower : MonoBehaviour
 
     }
 
-    IEnumerator FindEnemiesInRange(float checkDelay)
+    private IEnumerator FindEnemiesInRange(float checkDelay)
     {
         if (targetEnemy != null && Vector3.Distance(targetEnemy.transform.position, transform.position) > towerStats.attackRange)
         {
@@ -104,12 +103,12 @@ public class BaseTower : MonoBehaviour
     {
         if (_pool.Count < 1)
         {
-            IncreesePool();
+            IncreasePool();
         }
         return _pool.Dequeue();
     }
 
-    void IncreesePool()
+    void IncreasePool()
     {
         int startBulletCount = 5;
         int bulletToAdd = 0;

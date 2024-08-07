@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Zenject
 {
+    [NoReflectionBaking]
     public class PrefabInstantiatorCached : IPrefabInstantiator
     {
         readonly IPrefabInstantiator _subInstantiator;
@@ -33,12 +34,12 @@ namespace Zenject
             get { return _subInstantiator.GameObjectCreationParameters; }
         }
 
-        public UnityEngine.Object GetPrefab()
+        public UnityEngine.Object GetPrefab(InjectContext context)
         {
-            return _subInstantiator.GetPrefab();
+            return _subInstantiator.GetPrefab(context);
         }
 
-        public GameObject Instantiate(List<TypeValuePair> args, out Action injectAction)
+        public GameObject Instantiate(InjectContext context, List<TypeValuePair> args, out Action injectAction)
         {
             // We can't really support arguments if we are using the cached value since
             // the arguments might change when called after the first time
@@ -50,7 +51,7 @@ namespace Zenject
                 return _gameObject;
             }
 
-            _gameObject = _subInstantiator.Instantiate(new List<TypeValuePair>(), out injectAction);
+            _gameObject = _subInstantiator.Instantiate(context, new List<TypeValuePair>(), out injectAction);
             return _gameObject;
         }
     }

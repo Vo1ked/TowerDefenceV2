@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UniRx;
 
 public class PlayerData : MonoBehaviour
@@ -17,14 +15,7 @@ public class PlayerData : MonoBehaviour
             return _playerdata;
         }
     }
-    #region TempData
     public ReactiveProperty<int> currentWave = new ReactiveProperty<int>(1);
     public ReactiveProperty<float> currenGold = new ReactiveProperty<float>(0);
     public ReactiveProperty<int> currentHeals = new ReactiveProperty<int>(0);
-    #endregion
-
-
-
-
-
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace Zenject
 {
+    [NoReflectionBaking]
     public class PrefabProviderResource : IPrefabProvider
     {
         readonly string _resourcePath;
@@ -14,7 +15,7 @@ namespace Zenject
             _resourcePath = resourcePath;
         }
 
-        public UnityEngine.Object GetPrefab()
+        public UnityEngine.Object GetPrefab(InjectContext context)
         {
             var prefab = (GameObject)Resources.Load(_resourcePath);
 

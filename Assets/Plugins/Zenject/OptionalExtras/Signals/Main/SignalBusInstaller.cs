@@ -1,4 +1,3 @@
-using System;
 using ModestTree;
 
 namespace Zenject
@@ -18,6 +17,8 @@ namespace Zenject
 
             // Dispose last to ensure that we don't remove SignalSubscription before the user does
             Container.BindLateDisposableExecutionOrder<SignalBus>(-999);
+
+            Container.BindFactory<SignalDeclarationBindInfo, SignalDeclaration, SignalDeclaration.Factory>();
         }
     }
 }

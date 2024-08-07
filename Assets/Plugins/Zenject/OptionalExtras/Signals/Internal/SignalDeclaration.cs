@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using ModestTree;
-using System.Linq;
-
 #if ZEN_SIGNALS_ADD_UNIRX
 using UniRx;
 #endif
@@ -13,7 +11,7 @@ namespace Zenject
     {
         readonly List<SignalSubscription> _subscriptions = new List<SignalSubscription>();
         readonly List<object> _asyncQueue = new List<object>();
-        readonly Type _signalType;
+        readonly BindingId _bindingId;
         readonly SignalMissingHandlerResponses _missingHandlerResponses;
         readonly bool _isAsync;
         readonly ZenjectSettings.SignalSettings _settings;
@@ -23,7 +21,6 @@ namespace Zenject
 #endif
 
         public SignalDeclaration(
-            Type signalType,
             SignalDeclarationBindInfo bindInfo,
             [InjectOptional]
             ZenjectSettings zenjectSettings)
@@ -31,7 +28,7 @@ namespace Zenject
             zenjectSettings = zenjectSettings ?? ZenjectSettings.Default;
             _settings = zenjectSettings.Signals ?? ZenjectSettings.SignalSettings.Default;
 
-            _signalType = signalType;
+            _bindingId = new BindingId(bindInfo.SignalType, bindInfo.Identifier);
             _missingHandlerResponses = bindInfo.MissingHandlerResponse;
             _isAsync = bindInfo.RunAsync;
             TickPriority = bindInfo.TickPriority;
@@ -44,6 +41,8 @@ namespace Zenject
         }
 #endif
 
+		public List<SignalSubscription> Subscriptions => _subscriptions;
+
         public int TickPriority
         {
             get; private set;
@@ -54,9 +53,9 @@ namespace Zenject
             get { return _isAsync; }
         }
 
-        public Type SignalType
+        public BindingId BindingId
         {
-            get { return _signalType; }
+            get { return _bindingId; }
         }
 
         public void Dispose()
@@ -64,7 +63,7 @@ namespace Zenject
             if (_settings.RequireStrictUnsubscribe)
             {
                 Assert.That(_subscriptions.IsEmpty(),
-                    "Found {0} signal handlers still added to declaration {1}", _subscriptions.Count, _signalType);
+                    "Found {0} signal handlers still added to declaration {1}", _subscriptions.Count, _bindingId);
             }
             else
             {
@@ -84,7 +83,7 @@ namespace Zenject
 
         public void Fire(object signal)
         {
-            Assert.That(signal.GetType().DerivesFromOrEqual(_signalType));
+            Assert.That(signal.GetType().DerivesFromOrEqual(_bindingId.Type));
 
             if (_isAsync)
             {
@@ -174,6 +173,10 @@ namespace Zenject
         public void Remove(SignalSubscription subscription)
         {
             _subscriptions.RemoveWithConfirm(subscription);
+        }
+
+        public class Factory : PlaceholderFactory<SignalDeclarationBindInfo, SignalDeclaration>
+        {
         }
     }
 }

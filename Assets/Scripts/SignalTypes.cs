@@ -1,7 +1,4 @@
-﻿using Zenject;
-
-
-public class EnemyDieSignal
+﻿public class EnemyDieSignal
 {
     public readonly BaseEnemy enemy;
 

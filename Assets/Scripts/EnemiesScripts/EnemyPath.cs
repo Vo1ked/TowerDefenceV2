@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EnemyPath : MonoBehaviour
 {
-    // Start is called before the first frame update
     private static List<Transform> _waypoints = new List<Transform>();
     public static List<Transform> Waypoints
     {

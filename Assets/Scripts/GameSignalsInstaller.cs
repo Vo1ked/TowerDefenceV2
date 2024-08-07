@@ -1,6 +1,5 @@
 ﻿using Zenject;
 
-
 public class GameSignalsInstaller : Installer<GameSignalsInstaller>
 {
     public override void InstallBindings()
@@ -10,6 +9,5 @@ public class GameSignalsInstaller : Installer<GameSignalsInstaller>
         Container.DeclareSignal<EnemyDieSignal>();
         Container.DeclareSignal<EnemyFinishPathSignal>();
         Container.DeclareSignal<CellClickSignal>();
-
     }
 }

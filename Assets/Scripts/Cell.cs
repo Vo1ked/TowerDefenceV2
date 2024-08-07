@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
@@ -29,6 +27,4 @@ public class Cell: MonoBehaviour,IPointerClickHandler,IPointerEnterHandler,IPoin
     {
         _mesh.material.color = Color.white;
     }
-
-
 }

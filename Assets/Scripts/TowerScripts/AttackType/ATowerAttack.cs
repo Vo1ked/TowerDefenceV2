@@ -33,7 +33,8 @@ public abstract class ATowerAttack
             if (damage == 0 || tower.towerStats.Damage.critMultiplier == 0) return 0;
             return damage * tower.towerStats.Damage.critMultiplier;
         }
-        else return damage;
+
+        return damage;
     }
 
 

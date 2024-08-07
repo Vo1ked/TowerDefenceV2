@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
-using UniRx;
-using VolkTools;
 
 public class WaveSpawner : MonoBehaviour
 {
@@ -14,10 +12,7 @@ public class WaveSpawner : MonoBehaviour
     private int _currentWaveIndex = 0;
     public int CurrentWaveIndex
     {
-        get
-        {
-            return _currentWaveIndex;
-        }
+        get => _currentWaveIndex;
         private set
         {
             _currentWaveIndex = value;
@@ -104,6 +99,5 @@ public class WaveSpawner : MonoBehaviour
         }
         OnComplete?.Invoke();
     }
-
-
+    
 }

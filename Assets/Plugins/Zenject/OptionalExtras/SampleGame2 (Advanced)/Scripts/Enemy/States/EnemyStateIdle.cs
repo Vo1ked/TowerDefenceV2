@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-using System.Linq;
+using Random = UnityEngine.Random;
 
 namespace Zenject.SpaceFighter
 {
@@ -26,7 +26,7 @@ namespace Zenject.SpaceFighter
         public void EnterState()
         {
             _startPos = _view.Position;
-            _theta = UnityEngine.Random.Range(0, 2.0f * Mathf.PI);
+            _theta = Random.Range(0, 2.0f * Mathf.PI);
             _startLookDir = _view.LookDir;
         }
 

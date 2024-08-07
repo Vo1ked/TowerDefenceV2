@@ -23,7 +23,6 @@ public class Bullet : MonoBehaviour
     {
         var hittedEnemy = other.GetComponentInParent<BaseEnemy>();
         _aTowerAttack.OnColliderHit(hittedEnemy);
-
     }
 
 

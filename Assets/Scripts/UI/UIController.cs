@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
 using Zenject;
 
 public class UIController : MonoBehaviour
@@ -16,8 +14,7 @@ public class UIController : MonoBehaviour
         _uIWindows = new List<IUIWindow>();
         Instance = this;
     }
-
-    // Start is called before the first frame update
+    
     void Start()
     {
         IUIWindow window;
@@ -32,9 +29,8 @@ public class UIController : MonoBehaviour
             }
             ShowMainMenu();
         }
-
     }
-
+    
     public void HideAllWindow()
     {
         _uIWindows.ForEach(x => x.SetWindow(false));
@@ -50,7 +46,6 @@ public class UIController : MonoBehaviour
     {
         HideAllWindow();
         _uIWindows.Find(x => x.Name == "GUI").SetWindow(true);
-
     }
 
 }

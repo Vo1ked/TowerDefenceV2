@@ -4,8 +4,6 @@ using System.Collections.Generic;
 
 namespace VolkTools
 {
-
-
     public static class Tools
     {
         /// <summary>

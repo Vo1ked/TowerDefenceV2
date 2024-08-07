@@ -57,7 +57,7 @@ public class BaseEnemy : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        Heals = Heals - damage;
+        Heals -= damage;
         if (Heals < 0) UnitDie();
     }
 
